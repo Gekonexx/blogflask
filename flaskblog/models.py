@@ -1,4 +1,4 @@
-from flaskblog import db, app
+from flaskblog import db
 from datetime import datetime
 
 
@@ -23,12 +23,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return f" Post('{self.title}', '{self.date_posted}')"
-
-
-with app.app_context():
-    # Query for all users
-    users = User.query.all()
-
-    # Print each user's username and email
-    for user in users:
-        print(user.username, user.email)

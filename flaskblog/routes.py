@@ -53,3 +53,14 @@ def login():
         else:
             flash('Login Unsuccessful. Please Checkusername and password', 'danger')
     return render_template('login.html', form=form)
+#
+# @app.route("/logout")
+# def logout():
+#     logout_user()
+#     return redirect(url_for('home'))
+#
+#
+# @app.route("/account")
+# @login_required
+# def account():
+#     return render_template('account.html', title='Account')
