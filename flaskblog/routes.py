@@ -1,5 +1,7 @@
 import os
 import secrets
+from typing import Any, Tuple
+
 from PIL import Image
 from flaskblog.models import User, Post
 from flask import render_template, url_for, flash, redirect, request
@@ -73,16 +75,15 @@ def logout():
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
-    f_name, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics',
-                                picture_fn)  ##creates an path to the file using new file name (random numbers + extension)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn: str | Any = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
+    output_size: tuple[int, int] = (125, 125)
+    img = Image.open(form_picture)
+    img.thumbnail(output_size)
 
-    i.save(picture_path)
+    img.save(picture_path)
 
     return picture_fn
 
@@ -94,11 +95,11 @@ def account():
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            current_user.image = picture_file
+            current_user.image_file = picture_file
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated!', 'succes')
+        flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
